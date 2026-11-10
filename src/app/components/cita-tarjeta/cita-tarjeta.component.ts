@@ -13,14 +13,18 @@ import { Cita } from '../../services/citas.service';
   imports: [CommonModule, IonCard, IonCardContent, IonButton, IonIcon, IonText]
 })
 export class CitaTarjetaComponent {
+  // Recibe la cita sorteada y el booleano de configuración desde HomePage
   @Input() cita: Cita | null = null;
   @Input() permitirBorrar: boolean = false;
+
+  // Avisa al componente padre cuando el usuario presiona el basurero
   @Output() onEliminarCita = new EventEmitter<number>();
 
   constructor() {
     addIcons({ trashOutline });
   }
 
+  // Emite el id hacia HomePage para que el servicio la borre de SQLite
   solicitarEliminacion(): void {
     if (this.cita?.id !== undefined) {
       this.onEliminarCita.emit(this.cita.id);

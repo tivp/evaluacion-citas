@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -36,9 +36,9 @@ import { CitaTarjetaComponent } from '../components/cita-tarjeta/cita-tarjeta.co
     IonFab,
     IonFabButton,
     CitaTarjetaComponent
-  ],
+  ]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   citaActual: Cita | null = null;
   permitirBorrarInicio: boolean = false;
 
@@ -50,22 +50,31 @@ export class HomePage implements OnInit {
     addIcons({ settingsOutline, add });
   }
 
+  // Inicializa SQLite al arrancar la pantalla principal
   async ngOnInit(): Promise<void> {
     await this.citasService.iniciarPlugin();
     await this.cargarDatos();
   }
 
+  // Al volver desde Configuraciones o Gestión de citas, actualiza el permiso y la frase
   async ionViewWillEnter(): Promise<void> {
     await this.citasService.iniciarPlugin();
     await this.cargarDatos();
   }
 
+  // Cierra la conexión a la base de datos si el componente se destruye
+  async ngOnDestroy(): Promise<void> {
+    await this.citasService.cerrarConexion();
+  }
+
+  // Consulta Preferences y saca una cita aleatoria desde SQLite
   async cargarDatos(): Promise<void> {
     this.permitirBorrarInicio = await this.configService.permitirBorrarEnInicio();
     this.citaActual = await this.citasService.obtenerCitaAleatoria();
     this.cdr.detectChanges();
   }
 
+  // Recibe el id emitido por el componente hijo cita-tarjeta para borrarlo de SQLite
   async borrarCitaActual(id: number): Promise<void> {
     await this.citasService.eliminarCita(id);
     this.citaActual = await this.citasService.obtenerCitaAleatoria();

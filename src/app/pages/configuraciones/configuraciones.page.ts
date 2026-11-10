@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -36,12 +36,27 @@ import { ConfiguracionService } from '../../services/configuracion.service';
 export class ConfiguracionesPage implements OnInit {
   permitirEliminarInicio: boolean = false;
 
-  constructor(private configService: ConfiguracionService) {}
+  constructor(
+    private configService: ConfiguracionService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.permitirEliminarInicio = await this.configService.permitirBorrarEnInicio();
+    await this.cargarConfiguracion();
   }
 
+  // Recarga el valor cada vez que entramos a la vista de configuraciones
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarConfiguracion();
+  }
+
+  // Recupera el ajuste desde Preferences y refresca el estado del ion-toggle
+  async cargarConfiguracion(): Promise<void> {
+    this.permitirEliminarInicio = await this.configService.permitirBorrarEnInicio();
+    this.cdr.detectChanges();
+  }
+
+  // Se dispara con ionChange cuando el usuario mueve el interruptor
   async guardarCambio(): Promise<void> {
     await this.configService.setPermitirBorrarEnInicio(this.permitirEliminarInicio);
   }

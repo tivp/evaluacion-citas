@@ -37,6 +37,7 @@ export class GestionCitasPage implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  // Asegura que el plugin esté iniciado y carga todas las citas al abrir la página
   async ngOnInit(): Promise<void> {
     await this.citasService.iniciarPlugin();
     await this.actualizarLista();
@@ -47,16 +48,19 @@ export class GestionCitasPage implements OnInit {
     await this.actualizarLista();
   }
 
+  // Trae los registros desde SQLite y actualiza la vista para el *ngFor del hijo
   async actualizarLista(): Promise<void> {
     this.listaCitas = await this.citasService.obtenerCitas();
     this.cdr.detectChanges();
   }
 
+  // Escucha el evento @Output del formulario hijo para guardar la nueva cita
   async agregarNuevaCita(nuevaCita: Cita): Promise<void> {
     await this.citasService.agregarCita(nuevaCita);
     await this.actualizarLista();
   }
 
+  // Escucha el evento @Output de la lista hija para borrar la cita por su id
   async eliminarCita(id: number): Promise<void> {
     await this.citasService.eliminarCita(id);
     await this.actualizarLista();

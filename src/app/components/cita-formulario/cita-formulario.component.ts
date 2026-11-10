@@ -39,12 +39,14 @@ export class CitaFormularioComponent {
   fraseStr: string = '';
   autorStr: string = '';
 
+  // Envía el objeto Cita ya validado hacia GestionCitasPage
   @Output() onCitaCreada = new EventEmitter<Cita>();
 
   constructor() {
     addIcons({ addOutline });
   }
 
+  // Verifica que el formulario cumpla los largos mínimos antes de emitir los datos
   enviarFormulario(formulario: NgForm): void {
     if (formulario.invalid) {
       formulario.control.markAllAsTouched();

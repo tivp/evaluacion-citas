@@ -13,7 +13,10 @@ import { Cita } from '../../services/citas.service';
   imports: [CommonModule, IonList, IonItem, IonLabel, IonButton, IonIcon]
 })
 export class CitaListaComponent {
+  // Arreglo de citas que le pasa GestionCitasPage para recorrerlo con *ngFor
   @Input() citas: Cita[] = [];
+
+  // Emite el id de la fila seleccionada cuando se pulsa el icono de eliminar
   @Output() onEliminar = new EventEmitter<number>();
 
   constructor() {
