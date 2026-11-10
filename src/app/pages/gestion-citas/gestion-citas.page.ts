@@ -1,0 +1,64 @@
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonTitle,
+  IonContent
+} from '@ionic/angular';
+import { Cita, CitasService } from '../../services/citas.service';
+import { CitaFormularioComponent } from '../../components/cita-formulario/cita-formulario.component';
+import { CitaListaComponent } from '../../components/cita-lista/cita-lista.component';
+
+@Component({
+  selector: 'app-gestion-citas',
+  templateUrl: './gestion-citas.page.html',
+  styleUrls: ['./gestion-citas.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent,
+    CitaFormularioComponent,
+    CitaListaComponent
+  ]
+})
+export class GestionCitasPage implements OnInit {
+  listaCitas: Cita[] = [];
+
+  constructor(
+    private citasService: CitasService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    await this.citasService.iniciarPlugin();
+    await this.actualizarLista();
+  }
+
+  async ionViewWillEnter(): Promise<void> {
+    await this.citasService.iniciarPlugin();
+    await this.actualizarLista();
+  }
+
+  async actualizarLista(): Promise<void> {
+    this.listaCitas = await this.citasService.obtenerCitas();
+    this.cdr.detectChanges();
+  }
+
+  async agregarNuevaCita(nuevaCita: Cita): Promise<void> {
+    await this.citasService.agregarCita(nuevaCita);
+    await this.actualizarLista();
+  }
+
+  async eliminarCita(id: number): Promise<void> {
+    await this.citasService.eliminarCita(id);
+    await this.actualizarLista();
+  }
+}

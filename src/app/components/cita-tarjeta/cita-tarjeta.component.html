@@ -1,0 +1,21 @@
+<ion-card *ngIf="cita" color="light" class="ion-margin-top">
+  <ion-card-content>
+    <ion-text color="primary">
+      <h2 style="font-weight: 400; font-size: 1.3rem;">{{ cita.frase }}</h2>
+    </ion-text>
+    <p class="ion-text-right ion-margin-top" style="color: #222; font-weight: 500;">
+      {{ cita.autor }}
+    </p>
+    <div class="ion-text-right" *ngIf="permitirBorrar">
+      <ion-button fill="clear" color="danger" (click)="solicitarEliminacion()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="!cita" color="light" class="ion-margin-top">
+  <ion-card-content class="ion-text-center">
+    <p>No hay citas registradas. Agrega una nueva con el botón (+).</p>
+  </ion-card-content>
+</ion-card>

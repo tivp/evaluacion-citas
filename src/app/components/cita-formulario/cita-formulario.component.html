@@ -1,0 +1,64 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Crea una nueva cita</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <form #citaForm="ngForm" (ngSubmit)="enviarFormulario(citaForm)" novalidate>
+      <ion-item fill="solid">
+        <ion-input
+          label="Cita"
+          labelPlacement="stacked"
+          placeholder="Ingresa la frase célebre"
+          name="frase"
+          [(ngModel)]="fraseStr"
+          required
+          minlength="5"
+          #fraseInput="ngModel">
+        </ion-input>
+      </ion-item>
+
+      <!-- Mensajes de validación para el campo Cita (obligatorio y mín. 5 caracteres) -->
+      <div *ngIf="fraseInput.invalid && (fraseInput.dirty || fraseInput.touched)" class="ion-padding-start ion-margin-bottom">
+        <ion-text color="danger" *ngIf="fraseInput.errors?.['required']">
+          <small>La cita es obligatoria.</small>
+        </ion-text>
+        <ion-text color="danger" *ngIf="fraseInput.errors?.['minlength']">
+          <small>La cita debe tener al menos 5 caracteres.</small>
+        </ion-text>
+      </div>
+
+      <ion-item fill="solid" class="ion-margin-top">
+        <ion-input
+          label="Autor"
+          labelPlacement="stacked"
+          placeholder="Mahatma Gandhi"
+          name="autor"
+          [(ngModel)]="autorStr"
+          required
+          minlength="2"
+          #autorInput="ngModel">
+        </ion-input>
+      </ion-item>
+
+      <!-- Mensajes de validación para el campo Autor (obligatorio y mín. 2 caracteres) -->
+      <div *ngIf="autorInput.invalid && (autorInput.dirty || autorInput.touched)" class="ion-padding-start ion-margin-bottom">
+        <ion-text color="danger" *ngIf="autorInput.errors?.['required']">
+          <small>El nombre del autor es obligatorio.</small>
+        </ion-text>
+        <ion-text color="danger" *ngIf="autorInput.errors?.['minlength']">
+          <small>El autor debe tener al menos 2 caracteres.</small>
+        </ion-text>
+      </div>
+
+      <ion-button
+        type="submit"
+        fill="clear"
+        class="ion-margin-top"
+        [disabled]="citaForm.invalid">
+        AGREGAR
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </form>
+  </ion-card-content>
+</ion-card>

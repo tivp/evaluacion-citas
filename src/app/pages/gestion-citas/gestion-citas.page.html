@@ -1,0 +1,16 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Gestión de citas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Formulario con las validaciones -->
+  <app-cita-formulario (onCitaCreada)="agregarNuevaCita($event)"></app-cita-formulario>
+
+  <!-- Lista de citas iteradas con *ngFor y botón de eliminar -->
+  <app-cita-lista [citas]="listaCitas" (onEliminar)="eliminarCita($event)"></app-cita-lista>
+</ion-content>

@@ -1,4 +1,4 @@
-import type { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -9,5 +9,13 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: 'gestion-citas',
+    loadComponent: () => import('./pages/gestion-citas/gestion-citas.page').then(m => m.GestionCitasPage)
+  },
+  {
+    path: 'configuraciones',
+    loadComponent: () => import('./pages/configuraciones/configuraciones.page').then(m => m.ConfiguracionesPage)
   },
 ];
