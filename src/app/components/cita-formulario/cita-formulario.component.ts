@@ -48,16 +48,21 @@ export class CitaFormularioComponent {
 
   // Verifica que el formulario cumpla los largos mínimos antes de emitir los datos
   enviarFormulario(formulario: NgForm): void {
-    if (formulario.invalid) {
+    const fraseLimpia = (this.fraseStr || '').trim();
+    const autorLimpio = (this.autorStr || '').trim();
+
+    if (formulario.invalid || fraseLimpia.length < 5 || autorLimpio.length < 2) {
       formulario.control.markAllAsTouched();
       return;
     }
 
     this.onCitaCreada.emit({
-      frase: this.fraseStr.trim(),
-      autor: this.autorStr.trim()
+      frase: fraseLimpia,
+      autor: autorLimpio
     });
 
+    this.fraseStr = '';
+    this.autorStr = '';
     formulario.resetForm();
   }
 }

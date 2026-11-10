@@ -50,7 +50,7 @@ export class HomePage implements OnInit, OnDestroy {
     addIcons({ settingsOutline, add });
   }
 
-  // Inicializa SQLite al arrancar la pantalla principal
+  // Inicializa SQLite al arrancar la pantalla principal y carga una cita al azar
   async ngOnInit(): Promise<void> {
     await this.citasService.iniciarPlugin();
     await this.cargarDatos();
@@ -67,14 +67,14 @@ export class HomePage implements OnInit, OnDestroy {
     await this.citasService.cerrarConexion();
   }
 
-  // Consulta Preferences y saca una cita aleatoria desde SQLite
+  // Consulta Preferences y obtiene una cita aleatoria desde el servicio SQLite
   async cargarDatos(): Promise<void> {
     this.permitirBorrarInicio = await this.configService.permitirBorrarEnInicio();
     this.citaActual = await this.citasService.obtenerCitaAleatoria();
     this.cdr.detectChanges();
   }
 
-  // Recibe el id emitido por el componente hijo cita-tarjeta para borrarlo de SQLite
+  // Recibe el id emitido por el componente hijo cita-tarjeta para borrarlo en SQLite
   async borrarCitaActual(id: number): Promise<void> {
     await this.citasService.eliminarCita(id);
     this.citaActual = await this.citasService.obtenerCitaAleatoria();

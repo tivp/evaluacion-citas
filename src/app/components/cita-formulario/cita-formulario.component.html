@@ -55,7 +55,8 @@
         type="submit"
         fill="clear"
         class="ion-margin-top"
-        [disabled]="citaForm.invalid">
+        [disabled]="citaForm.invalid"
+        (click)="enviarFormulario(citaForm)">
         AGREGAR
         <ion-icon slot="end" name="add-outline"></ion-icon>
       </ion-button>
